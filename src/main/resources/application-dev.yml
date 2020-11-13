@@ -1,0 +1,73 @@
+# 配置数据源
+spring:
+  datasource:
+    druid:
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/train?serverTimezone=Asia/Shanghai&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: root
+      # 连接池的配置信息
+      # 初始连接数、最小连接数、最大连接数
+      initial-size: 5
+      min-idle: 10
+      max-active: 20
+      # 获取连接超时时间
+      max-wait: 5000
+      # 连接有效性检测时间、连接在池中最小生存的时间、连接在池中最大生存的时间
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      max-evictable-idle-time-millis: 900000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 检测连接是否有效
+      validation-query: select 1 from dual
+      # 配置监控统计
+      webStatFilter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+      filter:
+        stat:
+          enabled: true
+          # 记录慢SQL
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+#      filters: stat,wall,log4j
+# mybatis-plus 配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+  global-config:
+    db-config:
+      id-type: id_worker #全局默认主键类型
+      # 逻辑删除配置
+      logic-not-delete-value: 0 #逻辑已删除值,(逻辑删除下有效)
+      logic-delete-value: 1 #逻辑未删除值,(逻辑删除下有效)
+#        logic-delete-field: isValid  #全局逻辑删除的实体字段
+#        table-prefix: null #表名前缀，默认 null
+#        table-underline: true #表名、是否使用下划线命名，默认数据库表使用下划线命名
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  type-aliases-package: com.fullsee.entity
+  type-aliases-super-type: java.lang.Object
+#配置日志
+logging:
+  config: classpath:logback-dev.xml
+  file:
+    max-size: 10MB
+    max-history: 7
+    path: log\myspringboot.log
+  pattern:
+    console:
+
+
+
